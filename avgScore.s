@@ -164,32 +164,31 @@ ILoop:	bgt $t0, $t2, End
 
 	j JLoop
 IEnd: # Swapping
-	li $t8, 0
-	sll	$t7, $t0, 2		# shifting i by 4bits
-	add	$t7, $s2, $t7		# t7 = SORTED[i]
+	#temp = sorted[maxIndex];
+        #sorted[maxIndex] = sorted[i];
+        #sorted[i] = temp;
+        
+	#Getting temp
+	sll $t5, $t3, 2
+	add $s2, $s2, $t5
+	lw $t6, ($s2) # Temp = sorted[max]
 	
-	sll	$t9, $t3, 2		# shifting by 4
-	add	$t9, $s2, $t9		# t9 = SORTED[maxindex]
+	add $t9, $zero, $s2
+	sub $s2, $s2, $t5
 	
+	sll $t5, $t0, 2
+	add $s2, $s2, $t5
+	lw $t7, ($s2) # t7 = sorted[max]
+	sub $s2, $s2, $t5
 	
+	add $s2, $zero, $t9
+	sw $t7, ($s2) # sorted[maxIndex] = sorted[i];
 	
-	lw	$t5, ($t7)		# SORTED[i]
-	lw	$t6, ($t9)		# SORTED[maxindex]
+	sll $t5, $t0, 2
+	add $s2, $s2, $t5
+	sw $t6, ($s2)
 	
-	add $t4, $zero, $t7
-	
-	add	$s2, $zero, $t9		# SORTED[maxindex] location
-	sw	$t5, ($s2)		# SORTED[maxindex] = SORTED[i]
-	sub	$s2, $zero, $t9		# resetting
-	
-	
-	add	$s2, $zero, $t7		# SORTED[i] location
-	sw	$t4, ($s2)		# SORTED[i] =  
-	sub	$s2, $zero, $t7		# resetting
-	
-	addi $t0, $t0, 1# i
-	#addi $t1, $t1, 1# j
-
+	addi $t0, $t0, 1
 	j ILoop
 	
 End:	
@@ -200,7 +199,7 @@ End:
 
 NewMax:
 	add $t3, $t1, $zero # maxindex = j
-	addi $t0, $t0, 1
+	#addi $t0, $t0, 1
 	addi $t1, $t1, 1
 	j JLoop
 
