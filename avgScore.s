@@ -140,11 +140,12 @@ Resetting:	#Need to reset the SORTED array so that when we print it later it sta
 	beq $t1, $zero, Resetting
 #Setting up for loops
 	li $t0, 0 # I index
-	addi $t1, $t0, 1 # J index = i + 1
+	#addi $t1, $t0, 1 # J index = i + 1
 	addi $t2, $a0, -1 # size - 1
 	#li $t9, 0
 ILoop:	bgt $t0, $t2, End
 	add $t3, $zero, $t0 # maxindex
+	addi $t1, $t0, 1 # J index = i + 1
 	JLoop: bgt $t1, $a0, IEnd
 		#setting up for greater than compare
 		sll $t4, $t3, 2
@@ -165,28 +166,32 @@ ILoop:	bgt $t0, $t2, End
 	j JLoop
 IEnd: # Swapping
 	#temp = sorted[maxIndex];
-        #sorted[maxIndex] = sorted[i];
-        #sorted[i] = temp;
-        
-	#Getting temp
+
+      #  sorted[maxIndex] = sorted[i];
+
+       # sorted[i] = temp;
+	
 	sll $t5, $t3, 2
 	add $s2, $s2, $t5
-	lw $t6, ($s2) # Temp = sorted[max]
-	
-	add $t9, $zero, $s2
+	lw $t6, 0($s2) # t0 gets num1 = temp
+	#add $t9, $zero, $s2
 	sub $s2, $s2, $t5
 	
 	sll $t5, $t0, 2
 	add $s2, $s2, $t5
-	lw $t7, ($s2) # t7 = sorted[max]
+	lw $t7, 0($s2) # t1 gets num2 = SORTED[i]
 	sub $s2, $s2, $t5
 	
-	add $s2, $zero, $t9
-	sw $t7, ($s2) # sorted[maxIndex] = sorted[i];
+	sll $t5, $t3, 2 #maxindex location
+	add $s2, $s2, $t5
+	sw $t7, 0($s2)
+	#lw $t8, 0($s2) # t0 gets num1 = temp
+	sub $s2, $s2, $t5
 	
 	sll $t5, $t0, 2
 	add $s2, $s2, $t5
-	sw $t6, ($s2)
+	sw $t6, 0($s2)
+	sub $s2, $s2, $t5
 	
 	addi $t0, $t0, 1
 	j ILoop
