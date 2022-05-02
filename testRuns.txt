@@ -1,0 +1,68 @@
+CASE 1:
+Enter the number of assignments (between 1 and 25): 5
+Enter score: 1
+Enter score: 2
+Enter score: 3
+Enter score: 4
+Enter score: 5
+Original scores: 1 2 3 4 5 
+Sorted scores (in descending order): 5 4 3 2 1 
+Enter the number of (lowest) scores to drop: 2
+4
+-- program is finished running --
+
+CASE 2:
+Enter the number of assignments (between 1 and 25): 10
+Enter score: 13
+Enter score: 56
+Enter score: 19
+Enter score: 66
+Enter score: 43
+Enter score: 86
+Enter score: 31
+Enter score: 7
+Enter score: 1
+Enter score: 90
+Original scores: 13 56 19 66 43 86 31 7 1 90 
+Sorted scores (in descending order): 90 86 66 56 43 31 19 13 7 1 
+Enter the number of (lowest) scores to drop: 3
+8
+
+CASE 3:
+Enter the number of assignments (between 1 and 25): 6
+Enter score: 5
+Enter score: 4
+Enter score: 3
+Enter score: 2
+Enter score: 1
+Enter score: 10
+Original scores: 5 4 3 2 1 10 
+Sorted scores (in descending order): 10 5 4 3 2 1 
+Enter the number of (lowest) scores to drop: 3
+6
+-- program is finished running --
+
+CASE 4:
+Enter the number of assignments (between 1 and 25): 5
+Enter score: 1
+Enter score: 1
+Enter score: 10
+Enter score: 2
+Enter score: 2
+Original scores: 1 1 10 2 2 
+Sorted scores (in descending order): 10 2 2 1 1 
+Enter the number of (lowest) scores to drop: 2
+4
+-- program is finished running --
+
+CASE 5:
+Enter the number of assignments (between 1 and 25): 4
+Enter score: 87
+Enter score: 92
+Enter score: 81
+Enter score: 85
+Original scores: 87 92 81 85 
+Sorted scores (in descending order): 92 87 85 81 
+Enter the number of (lowest) scores to drop: 0
+86
+-- program is finished running --
