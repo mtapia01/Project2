@@ -72,8 +72,22 @@ loop_in:
 	move $a0, $s2
 	jal calcSum	# Call calcSum to RECURSIVELY compute the sum of scores that are not dropped
 	
+	
 	# Your code here to compute average and print it
 	div $v0, $a1 #calcSum / (numScores - drop)
+	mfhi $t0 #Remainder
+	mflo $t1 #Answer
+	move $a0, $t1
+	bgt $t0, 5, roundup
+	move $v0, $t1
+	
+cont:
+	move $a0, $v0
+	#lw $t0, ($t1)   #load array ele into t0
+        li $v0, 1	# |
+	move $a0, $t1	# |
+    	syscall		# Print out element
+	
 	
 	lw $ra, 0($sp)
 	addi $sp, $sp 4
@@ -86,8 +100,7 @@ loop_in:
 printArray:
 	# Your implementation of printList here	
 	la $t1, ($a0)#array
-	
-	
+
 	add $t3, $zero, $a1#counter
 
 Loop:
@@ -124,7 +137,6 @@ selSort:
 	la $t5, ($s2) #COPY
 	li $t1, 0 #counter
 	li $t3, 0
- 
 loop_start:
 	lw $t3, ($t0) #load ele of OG array into t3
 	sw $t3, ($s2) #save t3(OG array ele) into $s2(SORTED array)
@@ -140,9 +152,8 @@ Resetting:	#Need to reset the SORTED array so that when we print it later it sta
 	beq $t1, $zero, Resetting
 #Setting up for loops
 	li $t0, 0 # I index
-	#addi $t1, $t0, 1 # J index = i + 1
 	addi $t2, $a0, -1 # size - 1
-	#li $t9, 0
+
 ILoop:	bgt $t0, $t2, End
 	add $t3, $zero, $t0 # maxindex
 	addi $t1, $t0, 1 # J index = i + 1
@@ -160,40 +171,32 @@ ILoop:	bgt $t0, $t2, End
 	
 		bgt $t6, $t5, NewMax
 		
-		#addi $t0, $t0, 1
-		addi $t1, $t1, 1
 
+		addi $t1, $t1, 1
 	j JLoop
 IEnd: # Swapping
-	#temp = sorted[maxIndex];
-
-      #  sorted[maxIndex] = sorted[i];
-
-       # sorted[i] = temp;
 	
-	sll $t5, $t3, 2
-	add $s2, $s2, $t5
-	lw $t6, 0($s2) # t0 gets num1 = temp
-	#add $t9, $zero, $s2
-	sub $s2, $s2, $t5
+	sll $t5, $t3, 2 # shifting to get to maxindex location
+	add $s2, $s2, $t5 # at SORTED[maxindex]
+	lw $t6, 0($s2) # temp
+	sub $s2, $s2, $t5 # resetting array back to SORTED[0]
 	
-	sll $t5, $t0, 2
-	add $s2, $s2, $t5
-	lw $t7, 0($s2) # t1 gets num2 = SORTED[i]
-	sub $s2, $s2, $t5
+	sll $t5, $t0, 2 # shifting to get to i location
+	add $s2, $s2, $t5 # at SORTED[i]
+	lw $t7, 0($s2) # t7 = SORTED[i]
+	sub $s2, $s2, $t5 # resetting array back to SORTED[0]
 	
 	sll $t5, $t3, 2 #maxindex location
-	add $s2, $s2, $t5
-	sw $t7, 0($s2)
-	#lw $t8, 0($s2) # t0 gets num1 = temp
-	sub $s2, $s2, $t5
+	add $s2, $s2, $t5 # SORTED[maxindex]
+	sw $t7, 0($s2) # SORTED[maxindex] = t7(SORTED[i])
+	sub $s2, $s2, $t5 # resetting array back to SORTED[0]
 	
-	sll $t5, $t0, 2
-	add $s2, $s2, $t5
-	sw $t6, 0($s2)
-	sub $s2, $s2, $t5
+	sll $t5, $t0, 2 #shifting to SORTED[i]
+	add $s2, $s2, $t5 # at SORTED[i]
+	sw $t6, 0($s2) # SORTED[i] = t6(temp)
+	sub $s2, $s2, $t5 #resetting array back to SORTED[0]
 	
-	addi $t0, $t0, 1
+	addi $t0, $t0, 1 #increase i
 	j ILoop
 	
 End:	
@@ -212,8 +215,34 @@ NewMax:
 # calcSum takes in an array and its size as arguments.
 # It RECURSIVELY computes and returns the sum of elements in the array.
 # Note: you MUST NOT use iterative approach in this function.
-calcSum:
-	# Your implementation of calcSum here
+
+
+calcSum: 
+pro:
+	sub $sp,$sp,16 
+	sw $ra,12($sp)
+	sw $a1,16($sp)
+	li $v0, 0
+	#add $t3, $a1, $zero
+	li $t3, 0
+calcSum_callee:	
+	beq $a1, $zero, end_recur
+	sll $t0, $t3, 2
+	add $t0, $a0, $t0
+	lw $t1, ($t0)
+	add $v0, $t1, $v0
+	addi $a1, $a1,-1
+	addi $t3, $t3, 1
+	j calcSum_callee
 	
+end_recur:
+	lw $a1, 16($sp)
+	lw $ra, 12($sp)
+	
+	addiu $sp, $sp, 16
+
+	jr $ra	
+
+roundup:
+	addi $v0, $a0, 1
 	jr $ra
-	
