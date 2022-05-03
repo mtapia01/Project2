@@ -26,7 +26,7 @@ Enter score: 90
 Original scores: 13 56 19 66 43 86 31 7 1 90 
 Sorted scores (in descending order): 90 86 66 56 43 31 19 13 7 1 
 Enter the number of (lowest) scores to drop: 3
-8
+56
 
 CASE 3:
 Enter the number of assignments (between 1 and 25): 6

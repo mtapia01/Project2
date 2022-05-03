@@ -78,10 +78,11 @@ loop_in:
 	mfhi $t0 #Remainder
 	mflo $t1 #Answer
 	move $a0, $t1
-	bgt $t0, 5, roundup
-	move $v0, $t1
+	bgt $t0, 4, roundup
+	
 	
 cont:
+	move $t1, $v0
 	move $a0, $v0
 	#lw $t0, ($t1)   #load array ele into t0
         li $v0, 1	# |
@@ -245,4 +246,6 @@ end_recur:
 
 roundup:
 	addi $v0, $a0, 1
-	jr $ra
+	j cont
+	
+	
